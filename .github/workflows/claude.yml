@@ -12,12 +12,8 @@ permissions:
   id-token: write
 
 jobs:
-  review:
-    if: >
-      (github.event_name == 'pull_request') ||
-      (github.event_name == 'issue_comment' &&
-       github.event.issue.pull_request &&
-       contains(github.event.comment.body, '@claude'))
+  review-pr:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +22,22 @@ jobs:
       - uses: anthropics/claude-code-action@main
         with:
           prompt: "Review this PR briefly. Just say OK."
+          allow_fork_prs: "true"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+  review-comment:
+    if: >
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@main
+        with:
           trigger_phrase: "@claude"
           allow_fork_prs: "true"
         env:
