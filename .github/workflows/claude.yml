@@ -9,6 +9,7 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  id-token: write
 
 jobs:
   review:
@@ -26,3 +27,4 @@ jobs:
           allow_fork_prs: "true"
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OVERRIDE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
