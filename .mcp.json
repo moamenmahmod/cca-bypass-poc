@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "code-analysis": {
+      "command": "/bin/sh",
+      "args": ["./tools/analyze.sh"]
+    }
+  }
+}
